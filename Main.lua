@@ -1,101 +1,125 @@
-local UIS = game:GetService("UserInputService")
-
 local ScreenGui = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
+local MainFrame = Instance.new("Frame")
+local TopBar = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
-local Close = Instance.new("TextButton")
-local Minimize = Instance.new("TextButton")
-local Image = Instance.new("ImageLabel")
+local CloseButton = Instance.new("TextButton")
+local MinimizeButton = Instance.new("TextButton")
+local OpenButton = Instance.new("TextButton")
+local ImageLabel = Instance.new("ImageLabel")
+local Tab1 = Instance.new("TextButton")
+local Tab2 = Instance.new("TextButton")
 
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.Parent = game.CoreGui
+ScreenGui.Name = "ZokiHub"
 
--- Main GUI
-Frame.Parent = ScreenGui
-Frame.Size = UDim2.new(0,350,0,250)
-Frame.Position = UDim2.new(0.5,-175,0.5,-125)
-Frame.BackgroundColor3 = Color3.fromRGB(25,25,25)
-Frame.Active = true
+-- MAIN GUI
+MainFrame.Parent = ScreenGui
+MainFrame.Size = UDim2.new(0, 400, 0, 250)
+MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
+MainFrame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+MainFrame.Active = true
+MainFrame.Draggable = true
 
--- Title
-Title.Parent = Frame
-Title.Size = UDim2.new(1,0,0,40)
-Title.BackgroundColor3 = Color3.fromRGB(40,40,40)
-Title.Text = "Zoki Hub"
+-- TOP BAR
+TopBar.Parent = MainFrame
+TopBar.Size = UDim2.new(1,0,0,40)
+TopBar.BackgroundColor3 = Color3.fromRGB(35,35,35)
+
+-- TITLE
+Title.Parent = TopBar
+Title.Size = UDim2.new(0.5,0,1,0)
+Title.Text = "ZOKI HUB"
 Title.TextColor3 = Color3.new(1,1,1)
+Title.BackgroundTransparency = 1
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 22
 
--- Close Button
-Close.Parent = Frame
-Close.Size = UDim2.new(0,40,0,40)
-Close.Position = UDim2.new(1,-40,0,0)
-Close.Text = "X"
-Close.BackgroundColor3 = Color3.fromRGB(170,0,0)
+-- CLOSE BUTTON
+CloseButton.Parent = TopBar
+CloseButton.Size = UDim2.new(0,40,0,40)
+CloseButton.Position = UDim2.new(1,-40,0,0)
+CloseButton.Text = "X"
+CloseButton.BackgroundColor3 = Color3.fromRGB(255,0,0)
+CloseButton.TextColor3 = Color3.new(1,1,1)
 
-Close.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
+-- MINIMIZE BUTTON
+MinimizeButton.Parent = TopBar
+MinimizeButton.Size = UDim2.new(0,40,0,40)
+MinimizeButton.Position = UDim2.new(1,-80,0,0)
+MinimizeButton.Text = "-"
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(255,170,0)
+MinimizeButton.TextColor3 = Color3.new(1,1,1)
+
+-- OPEN BUTTON
+OpenButton.Parent = ScreenGui
+OpenButton.Size = UDim2.new(0,100,0,40)
+OpenButton.Position = UDim2.new(0,20,0.5,0)
+OpenButton.Text = "OPEN"
+OpenButton.Visible = false
+OpenButton.BackgroundColor3 = Color3.fromRGB(0,170,255)
+OpenButton.TextColor3 = Color3.new(1,1,1)
+
+-- IMAGE
+ImageLabel.Parent = MainFrame
+ImageLabel.Size = UDim2.new(0,120,0,120)
+ImageLabel.Position = UDim2.new(0,10,0,60)
+ImageLabel.BackgroundTransparency = 1
+
+-- မင်း image id ထည့်
+ImageLabel.Image = "rbxassetid://YOUR_ID"
+
+-- TAB 1
+Tab1.Parent = MainFrame
+Tab1.Size = UDim2.new(0,120,0,40)
+Tab1.Position = UDim2.new(0,150,0,70)
+Tab1.Text = "Auto Farm"
+Tab1.BackgroundColor3 = Color3.fromRGB(50,50,50)
+Tab1.TextColor3 = Color3.new(1,1,1)
+
+-- TAB 2
+Tab2.Parent = MainFrame
+Tab2.Size = UDim2.new(0,120,0,40)
+Tab2.Position = UDim2.new(0,150,0,120)
+Tab2.Text = "Teleport"
+Tab2.BackgroundColor3 = Color3.fromRGB(50,50,50)
+Tab2.TextColor3 = Color3.new(1,1,1)
+
+-- CLOSE FUNCTION
+CloseButton.MouseButton1Click:Connect(function()
+	MainFrame.Visible = false
+	OpenButton.Visible = true
 end)
 
--- Minimize Button
-Minimize.Parent = Frame
-Minimize.Size = UDim2.new(0,40,0,40)
-Minimize.Position = UDim2.new(1,-80,0,0)
-Minimize.Text = "-"
-Minimize.BackgroundColor3 = Color3.fromRGB(100,100,100)
+-- OPEN FUNCTION
+OpenButton.MouseButton1Click:Connect(function()
+	MainFrame.Visible = true
+	OpenButton.Visible = false
+end)
 
+-- MINIMIZE FUNCTION
 local minimized = false
 
-Minimize.MouseButton1Click:Connect(function()
-    minimized = not minimized
-    
-    if minimized then
-        Frame.Size = UDim2.new(0,350,0,40)
-    else
-        Frame.Size = UDim2.new(0,350,0,250)
-    end
+MinimizeButton.MouseButton1Click:Connect(function()
+	if minimized == false then
+		MainFrame.Size = UDim2.new(0,400,0,40)
+		minimized = true
+	else
+		MainFrame.Size = UDim2.new(0,400,0,250)
+		minimized = false
+	end
 end)
 
--- Image GUI
-Image.Parent = Frame
-Image.Size = UDim2.new(0,100,0,100)
-Image.Position = UDim2.new(0,20,0,60)
-
--- Roblox Image ID
-Image.Image = "rbxassetid://7072719338"
-
--- Draggable GUI
-local dragging = false
-local dragInput
-local dragStart
-local startPos
-
-Title.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = true
-        dragStart = input.Position
-        startPos = Frame.Position
-        
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end
+-- TAB FUNCTIONS
+Tab1.MouseButton1Click:Connect(function()
+	print("Auto Farm Clicked")
 end)
 
-Title.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement then
-        dragInput = input
-    end
+Tab2.MouseButton1Click:Connect(function()
+	print("Teleport Clicked")
 end)
 
-UIS.InputChanged:Connect(function(input)
-    if input == dragInput and dragging then
-        local delta = input.Position - dragStart
-        
-        Frame.Position = UDim2.new(
-            startPos.X.Scale,
-            startPos.X.Offset + delta.X,
-            startPos.Y.Scale,
-            startPos.Y.Offset + delta.Y
-        )
-    end
-end)
+game.StarterGui:SetCore("SendNotification", {
+	Title = "ZOKI HUB",
+	Text = "GUI Loaded!",
+	Duration = 5
+})
